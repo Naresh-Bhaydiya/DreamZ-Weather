@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Weather Data</title>
+    <style>
+        body {
+            background-color: #f0f0f0; 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        nav {
+            background-color: #333; 
+            color: white; 
+            padding: 10px; 
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        form {
+            display: flex;
+            justify-content: space-between;
+            max-width: 400px; 
+            margin: 0 auto; 
+        }
+
+        label, input, button {
+            margin-bottom: 10px; 
+        }
+
+        h1 {
+            text-align: center; 
+            color: #333; 
+        }
+
+        table {
+            width: 80%; 
+            margin: 20px auto; 
+            border-collapse: collapse; 
+            background-color: white; 
+        }
+
+        th, td {
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: left; 
+        }
+
+        img {
+            display: block;
+            margin: 20px auto; 
+            max-width: 100%; 
+        }
+
+        p {
+            text-align: center; 
+            color: #555; 
+        }
+    </style>
+</head>
+<body>
+    <nav><a href="/">Back</a>
+        <form action="{% url 'historical_weather' %}" method="post">
+            {% csrf_token %}
+            <div>
+                <label for="city">Start Date</label>
+                <input type="date" name="start_date">
+            </div>
+            <div>                
+                <label for="city">End Date</label>
+                <input type="date" name="end_date">
+            </div>
+            <button type="submit">Search</button>
+        </form>
+    </nav>
+    <h1>Historical Weather Data</h1>
+
+    {% if historical_data %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>Temperature (°C)</th>
+                    <th>Humidity (%)</th>
+                    <th>Wind Speed (m/s)</th>
+                    <th>Date and Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in historical_data %}
+                    <tr>
+                        <td>{{ data.city_name }}</td>
+                        <td>{{ data.temperature }}</td>
+                        <td>{{ data.humidity }}</td>
+                        <td>{{ data.wind_speed }}</td>
+                        <td>{{ data.date_time }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Embedded chart -->
+        <img src="data:image/png;base64,{{ chart_base64 }}" alt="Temperature Trends Chart">
+
+    {% else %}
+        <p>No historical weather data available for the specified date range.</p>
+    {% endif %}
+
+</body>
+</html>

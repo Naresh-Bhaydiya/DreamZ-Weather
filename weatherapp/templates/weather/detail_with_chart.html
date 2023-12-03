@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Detail with Chart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        label {
+            color: white;
+            margin-right: 10px;
+        }
+
+        input {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        main {
+            margin: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .weather-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        a:link, a:visited {
+            background-color: none;
+            color: white;
+            padding-right: 50px;
+            
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+          }
+          
+          a:hover, a:active {
+            color: blue;
+           
+            
+          }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div>
+                <a href="{% url 'historical_weather' %}">
+                <input type="button" value="Weather Historical Data"></a>
+            </div>
+            <div>
+                <label for="city">City Name</label>
+                <input type="text" name="city_name" placeholder="City Name">
+            </div>
+            <button type="submit">Search</button>
+        </form>
+    </nav>
+
+    <main>
+        <h1>Weather Information for {{ weather_data.name }}</h1>
+        <p>Temperature: {{ weather_data.main.temp }}°C</p>
+        <p>Humidity: {{ weather_data.main.humidity }}%</p>
+        <p>Wind Speed: {{ weather_data.wind.speed }} m/s</p>
+        <img src="data:image/png;base64,{{ chart_base64 }}" alt="Weather Chart" class="weather-image">
+    </main>
+
+    <footer>
+        &copy; 2023 Weather Desktop App
+    </footer>
+</body>
+
+</html>
